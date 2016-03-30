@@ -1,0 +1,49 @@
+{
+  "name": "qcrafal/click-meeting-client",
+  "description": "Rest client for ClickMeeting api",
+  "keywords": [
+    "http",
+    "rest",
+    "web service",
+    "curl",
+    "client",
+    "HTTP client",
+    "ClickMeeting",
+    "ClickWebinar"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rafal Kuc",
+      "email": "qc.rafal@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ClickMeeting\\": "lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ClickMeeting\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=5.6.0",
+    "ext-curl": "*",
+    "phpunit/phpunit": "~5.2",
+    "psr/log": "~1.0"
+  },
+  "require-dev": {
+    "guzzlehttp/guzzle": "~6.2"
+  },
+  "suggest": {
+    "guzzlehttp/guzzle": "Allows more advanced requests interface"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "develop"
+    }
+  }
+}

@@ -21,6 +21,7 @@ class GuzzleClient extends AbstractClient
         if (!class_exists('GuzzleHttp\Client')) {
             throw new \Exception('require guzzlehttp/guzzle to use this class');
         }
+
         parent::__construct($apiKey, $url, $format);
 
         $this->guzzleClient = $client ?: new HttpClient(
@@ -30,6 +31,7 @@ class GuzzleClient extends AbstractClient
                 'headers'  => [
                     'X-Api-Key' => $this->apiKey,
                 ],
+                'debug' => true,
             ]
         );
     }
@@ -46,19 +48,30 @@ class GuzzleClient extends AbstractClient
         $formatResponse = true,
         $isUploadFile = false
     ) {
+        $options = [
+            'headers' => [],
+        ];
+        if (true === $isUploadFile) {
+            $options['multipart'] = true;
+        }
+
+        switch ($method) {
+            case 'POST':
+                $options['form_params'] = $params;
+                break;
+            case 'PUT':
+                if (0 === count($params)) {
+                    $options['headers']['Content-Length'] = 0;
+                }
+                $options['form_params'] = $params;
+                break;
+        }
 
         $response = $this->guzzleClient->request(
             $method,
             $path,
-            [
-                'body' => $params,
-            ]
+            $options
         );
-
-//        $httpCode = $response->getStatusCode();
-//        if (!in_array($httpCode, [200, 201], true)) {
-//            throw $this->createResponseException($response, $httpCode);
-//        }
 
         $responseBody = (string) $response->getBody();
 

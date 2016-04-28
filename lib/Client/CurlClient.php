@@ -50,7 +50,8 @@ class CurlClient extends AbstractClient
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         if (!in_array($method, ['GET', 'DELETE'], true) && 0 !== count($params)) {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $isUploadFile ? $params : http_build_query($params));
+            $requestPrams = http_build_query($params);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $isUploadFile ? $params : $requestPrams);
         }
 
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');

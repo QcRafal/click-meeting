@@ -9,11 +9,24 @@ namespace ClickMeeting\Client;
  */
 class CurlClient extends AbstractClient
 {
+    /**
+     * @var array
+     */
     protected $curlOptions = [
         CURLOPT_CONNECTTIMEOUT => 8,
         CURLOPT_TIMEOUT        => 8,
     ];
 
+    /**
+     * @param string $method
+     * @param string $path
+     * @param array  $params
+     * @param bool   $formatResponse
+     * @param bool   $isUploadFile
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     protected function sendRequest(
         $method,
         $path,
@@ -78,11 +91,22 @@ class CurlClient extends AbstractClient
         return $response;
     }
 
+    /**
+     * @param $response
+     * @param $httpCode
+     *
+     * @return \Exception
+     */
     protected function createResponseException($response, $httpCode)
     {
         return new \Exception($response, $httpCode);
     }
 
+    /**
+     * @param $curl
+     *
+     * @return \Exception
+     */
     protected function createCurlException($curl)
     {
         return new \Exception('Unable to connect to '.$this->url.' Error: '.curl_error($curl));

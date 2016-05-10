@@ -2,7 +2,8 @@
 
 namespace ClickMeeting\Client;
 
-use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 
 /**
  * Class GuzzleClient
@@ -16,31 +17,117 @@ class GuzzleClient extends AbstractClient
      */
     protected $guzzleClient;
 
-    public function __construct($apiKey, $url = null, $format = 'json', HttpClient $client = null)
+    /**
+     * GuzzleClient constructor.
+     *
+     * @param string               $apiKey
+     * @param string               $url
+     * @param string               $format
+     * @param ClientInterface|null $client
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($apiKey, $url = null, $format = 'json', ClientInterface $client = null)
     {
         if (!class_exists('GuzzleHttp\Client')) {
-            throw new \Exception('require guzzlehttp/guzzle to use this class');
+            throw new \InvalidArgumentException('require guzzlehttp/guzzle to use this class');
         }
 
         parent::__construct($apiKey, $url, $format);
 
-        $this->guzzleClient = $client ?: new HttpClient(
+        $this->guzzleClient = $client ?: new Client(
             [
                 'base_uri' => $this->url,
                 'timeout'  => '8.0',
                 'headers'  => [
                     'X-Api-Key' => $this->apiKey,
                 ],
-                'debug' => true,
+                'debug'    => true,
             ]
         );
     }
 
-    public function setGuzzleClient(HttpClient $guzzleClient)
+    /**
+     * @param ClientInterface $guzzleClient
+     */
+    public function setGuzzleClient(ClientInterface $guzzleClient)
     {
         $this->guzzleClient = $guzzleClient;
     }
 
+    /**
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
+     * @param string $apiKey
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFormats()
+    {
+        return self::$formats;
+    }
+
+    /**
+     * @param array $formats
+     */
+    public static function setFormats($formats)
+    {
+        self::$formats = $formats;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @param string $method
+     * @param string $path
+     * @param array  $params
+     * @param bool   $formatResponse
+     * @param bool   $isUploadFile
+     *
+     * @return mixed|string
+     */
     protected function sendRequest(
         $method,
         $path,

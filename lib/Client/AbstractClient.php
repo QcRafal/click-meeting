@@ -9,6 +9,9 @@ namespace ClickMeeting\Client;
  */
 abstract class AbstractClient implements ClientInterface
 {
+    /**
+     *
+     */
     const CLICK_MEETING_API_URL = 'https://api.clickmeeting.com/v1/';
     /**
      * @var string
@@ -51,8 +54,6 @@ abstract class AbstractClient implements ClientInterface
      * @param bool   $formatResponse
      * @param bool   $isUploadFile
      *
-     *
-     * @throws \Exception
      * @return string|array
      */
     abstract protected function sendRequest(
@@ -63,11 +64,22 @@ abstract class AbstractClient implements ClientInterface
         $isUploadFile = false
     );
 
+    /**
+     * @param $format
+     *
+     * @return bool
+     */
     protected function isFormatValid($format)
     {
         return in_array($format, self::$formats, true);
     }
 
+    /**
+     * @param string $status
+     * @param int    $page
+     *
+     * @return array|string
+     */
     public function getConferences($status = 'active', $page = 1)
     {
         return $this->sendRequest(
@@ -76,6 +88,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function getConference($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -84,6 +101,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function addConference(array $params)
     {
         return $this->sendRequest(
@@ -93,6 +115,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int   $conferenceRoomId
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function editConference($conferenceRoomId, array $params)
     {
         return $this->sendRequest(
@@ -102,11 +130,22 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function deleteConference($conferenceRoomId)
     {
         return $this->sendRequest('DELETE', sprintf('conferences/%s', $conferenceRoomId));
     }
 
+    /**
+     * @param int   $conferenceRoomId
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function createAutologinUrl($conferenceRoomId, array $params)
     {
         return $this->sendRequest(
@@ -116,6 +155,13 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int    $conferenceRoomId
+     * @param array  $params
+     * @param string $lang
+     *
+     * @return array|string
+     */
     public function sendEmailInvitations($conferenceRoomId, array $params, $lang = 'en')
     {
         return $this->sendRequest(
@@ -125,6 +171,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function getConferenceSkins()
     {
         return $this->sendRequest(
@@ -133,6 +182,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int   $conferenceRoomId
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function createTokens($conferenceRoomId, array $params)
     {
         return $this->sendRequest(
@@ -142,6 +197,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function getTokens($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -150,6 +210,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function getSessions($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -158,6 +223,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     * @param int $sessionId
+     *
+     * @return array|string
+     */
     public function getSession($conferenceRoomId, $sessionId)
     {
         return $this->sendRequest(
@@ -166,6 +237,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     * @param int $sessionId
+     *
+     * @return array|string
+     */
     public function getSessionAttendees($conferenceRoomId, $sessionId)
     {
         return $this->sendRequest(
@@ -174,6 +251,13 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int    $conferenceRoomId
+     * @param int    $sessionId
+     * @param string $lang
+     *
+     * @return array|string
+     */
     public function createSessionPDF($conferenceRoomId, $sessionId, $lang = 'en')
     {
         return $this->sendRequest(
@@ -182,6 +266,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function addContact(array $params)
     {
         return $this->sendRequest(
@@ -191,6 +280,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function getTimeZoneList()
     {
         return $this->sendRequest(
@@ -199,6 +291,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param $country
+     *
+     * @return array|string
+     */
     public function getTimeZoneListByCountry($country)
     {
         return $this->sendRequest(
@@ -207,6 +304,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function getPhoneGatewayList()
     {
         return $this->sendRequest(
@@ -215,6 +315,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int   $conferenceRoomId
+     * @param array $params
+     *
+     * @return array|string
+     */
     public function addRegistration($conferenceRoomId, array $params)
     {
         return $this->sendRequest(
@@ -224,6 +330,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int    $conferenceRoomId
+     * @param string $status
+     *
+     * @return array|string
+     */
     public function getRegistrations($conferenceRoomId, $status = 'all')
     {
         return $this->sendRequest(
@@ -232,6 +344,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     * @param int $sessionId
+     *
+     * @return array|string
+     */
     public function getSessionRegistrations($conferenceRoomId, $sessionId)
     {
         return $this->sendRequest(
@@ -240,6 +358,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function getFiles()
     {
         return $this->sendRequest(
@@ -248,6 +369,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function getFilesByConference($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -256,6 +382,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param $fileId
+     *
+     * @return array|string
+     */
     public function getFile($fileId)
     {
         return $this->sendRequest(
@@ -264,6 +395,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param $filePath
+     *
+     * @return array|string
+     */
     public function addFile($filePath)
     {
         return $this->sendRequest(
@@ -275,6 +411,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param $fileId
+     *
+     * @return array|string
+     */
     public function getFileContent($fileId)
     {
         return $this->sendRequest(
@@ -283,6 +424,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param $fileId
+     *
+     * @return array|string
+     */
     public function deleteFile($fileId)
     {
         return $this->sendRequest(
@@ -291,6 +437,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function getRecordings($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -299,6 +450,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     *
+     * @return array|string
+     */
     public function deleteRecordings($conferenceRoomId)
     {
         return $this->sendRequest(
@@ -307,6 +463,12 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $conferenceRoomId
+     * @param     $recordingId
+     *
+     * @return array|string
+     */
     public function deleteRecording($conferenceRoomId, $recordingId)
     {
         return $this->sendRequest(
@@ -315,6 +477,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function getChats()
     {
         return $this->sendRequest(
@@ -323,6 +488,11 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @param int $sessionId
+     *
+     * @return array|string
+     */
     public function getChatsBySession($sessionId)
     {
         return $this->sendRequest(
@@ -331,6 +501,9 @@ abstract class AbstractClient implements ClientInterface
         );
     }
 
+    /**
+     * @return array|string
+     */
     public function ping()
     {
         return $this->sendRequest(
